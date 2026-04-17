@@ -223,10 +223,11 @@ app.post('/webhook', (req, res) => {
                         if (gestorSesiones.has(numeroUsuario)) {
                             gestorSesiones.delete(numeroUsuario);
                             console.log(`[OPSEC] Memoria liberada de ${numeroUsuario} tras inactividad.`);
+                            enviarMensaje(numeroUsuario, `⏳ Tu sesión ha sido cerrada por inactividad para proteger tus datos.\n\nGracias por utilizar los servicios de la Secretaría de Hacienda. ¡Que tengas un excelente día! 👋`);
                         }
                     }, 15 * 60 * 1000);
 
-                    let textoPredios = cantidadPredios > 1 ? `en sus *${cantidadPredios} predios*` : `de Impuesto Predial`;
+                    let textoPredios = cantidadPredios > 1 ? `en sus *${cantidadPredios} predios*` : `de Impuesto Predial`; 
 
                     let mensajeRespuesta = 
 `🤖 Hola, 
@@ -254,7 +255,10 @@ Puede pasar por las oficinas de la Secretaría de Hacienda en la Alcaldía para 
                     gestorSesiones.set(numeroUsuario, { estado: 'FALLIDO', cedula: mensajeUsuario, advertido: false });
                     
                     setTimeout(() => {
-                        if (gestorSesiones.has(numeroUsuario)) gestorSesiones.delete(numeroUsuario);
+                        if (gestorSesiones.has(numeroUsuario)) {
+                            gestorSesiones.delete(numeroUsuario);
+                            enviarMensaje(numeroUsuario, `⏳ Tu sesión ha sido cerrada por inactividad para proteger tus datos.\n\nGracias por utilizar los servicios de la Secretaría de Hacienda. ¡Que tengas un excelente día! 👋`);
+                        }
                     }, 15 * 60 * 1000);
                 }
             
